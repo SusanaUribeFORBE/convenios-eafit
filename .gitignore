@@ -1,0 +1,26 @@
+# Cache de Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Documentos generados (output local)
+documentos_generados/
+
+# Archivos de datos con info sensible
+TALENTO_EAFIT_Carga_Masiva.xlsx
+
+# Launcher de Windows (solo uso local)
+INICIAR_DEMO.bat
+
+# Scripts de desarrollo/utilidades
+crear_excel_maestro.py
+crear_plantillas.py
+
+# Entornos virtuales
+venv/
+.venv/
+env/
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db

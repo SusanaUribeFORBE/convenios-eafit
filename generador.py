@@ -7,7 +7,7 @@ from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 BASE      = os.path.dirname(os.path.abspath(__file__))
-TEMPLATES = os.path.join(BASE, "templates")
+TEMPLATES = BASE
 
 MESES = {1:'enero',2:'febrero',3:'marzo',4:'abril',5:'mayo',6:'junio',
          7:'julio',8:'agosto',9:'septiembre',10:'octubre',11:'noviembre',12:'diciembre'}

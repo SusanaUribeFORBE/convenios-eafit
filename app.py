@@ -320,7 +320,7 @@ components.html("""
 
   </div>
 </div>
-""", height=160)
+""", height=220)
 
 st.divider()
 

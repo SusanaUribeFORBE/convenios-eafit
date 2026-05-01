@@ -267,60 +267,55 @@ with col3:
 # Pipeline visual estático (siempre visible)
 import streamlit.components.v1 as components
 components.html("""
-<div style="
-  background:#f8faff;
-  border:1.5px solid #d1ddf7;
-  border-radius:12px;
-  padding:16px 20px;
-  font-family: sans-serif;
-">
-  <div style="font-size:11px; font-weight:700; color:#0057a8; text-transform:uppercase;
-              letter-spacing:.06em; margin-bottom:12px;">
+<div style="background:#f8faff; border:1.5px solid #d1ddf7; border-radius:12px;
+            padding:14px 16px; font-family:sans-serif; box-sizing:border-box; width:100%;">
+  <div style="font-size:10px; font-weight:700; color:#0057a8; text-transform:uppercase;
+              letter-spacing:.06em; margin-bottom:10px;">
     Orden secuencial de firmas
   </div>
-  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+  <div style="display:flex; align-items:stretch; gap:4px; flex-wrap:nowrap; width:100%;">
 
-    <div style="background:white; border:2px solid #0057a8; border-radius:10px;
-                padding:10px 14px; min-width:130px; text-align:center;">
-      <div style="font-size:20px;">&#127970;</div>
-      <div style="font-size:12px; font-weight:700; color:#003087; margin-top:4px;">Organizaci&#243;n</div>
-      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Representante legal</div>
-      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Plazo: 48 h</div>
+    <div style="background:white; border:2px solid #0057a8; border-radius:8px;
+                padding:8px 6px; flex:1; text-align:center; min-width:0;">
+      <div style="font-size:18px;">&#127970;</div>
+      <div style="font-size:11px; font-weight:700; color:#003087; margin-top:3px;">Organizaci&#243;n</div>
+      <div style="font-size:9px; color:#6b7280; margin-top:1px;">Representante legal</div>
+      <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Plazo: 48 h</div>
     </div>
 
-    <div style="color:#9ca3af; font-size:22px;">&rsaquo;</div>
+    <div style="color:#9ca3af; font-size:18px; display:flex; align-items:center; padding:0 2px;">&#8250;</div>
 
-    <div style="background:white; border:2px solid #0057a8; border-radius:10px;
-                padding:10px 14px; min-width:130px; text-align:center;">
-      <div style="font-size:20px;">&#128100;</div>
-      <div style="font-size:12px; font-weight:700; color:#003087; margin-top:4px;">Estudiante</div>
-      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Al recibir confirmaci&#243;n</div>
-      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Plazo: 48 h</div>
+    <div style="background:white; border:2px solid #0057a8; border-radius:8px;
+                padding:8px 6px; flex:1; text-align:center; min-width:0;">
+      <div style="font-size:18px;">&#128100;</div>
+      <div style="font-size:11px; font-weight:700; color:#003087; margin-top:3px;">Estudiante</div>
+      <div style="font-size:9px; color:#6b7280; margin-top:1px;">Al recibir confirmaci&#243;n</div>
+      <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Plazo: 48 h</div>
     </div>
 
-    <div style="color:#9ca3af; font-size:22px;">&rsaquo;</div>
+    <div style="color:#9ca3af; font-size:18px; display:flex; align-items:center; padding:0 2px;">&#8250;</div>
 
-    <div style="background:white; border:2px solid #0057a8; border-radius:10px;
-                padding:10px 14px; min-width:130px; text-align:center;">
-      <div style="font-size:20px;">&#127891;</div>
-      <div style="font-size:12px; font-weight:700; color:#003087; margin-top:4px;">EAFIT</div>
-      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Asesor Talento EAFIT</div>
-      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Plazo: 24 h</div>
+    <div style="background:white; border:2px solid #0057a8; border-radius:8px;
+                padding:8px 6px; flex:1; text-align:center; min-width:0;">
+      <div style="font-size:18px;">&#127891;</div>
+      <div style="font-size:11px; font-weight:700; color:#003087; margin-top:3px;">EAFIT</div>
+      <div style="font-size:9px; color:#6b7280; margin-top:1px;">Asesor Talento</div>
+      <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Plazo: 24 h</div>
     </div>
 
-    <div style="color:#9ca3af; font-size:22px;">&rsaquo;</div>
+    <div style="color:#9ca3af; font-size:18px; display:flex; align-items:center; padding:0 2px;">&#8250;</div>
 
-    <div style="background:#f0fdf4; border:2px solid #22c55e; border-radius:10px;
-                padding:10px 14px; min-width:130px; text-align:center;">
-      <div style="font-size:20px;">&#9989;</div>
-      <div style="font-size:12px; font-weight:700; color:#16a34a; margin-top:4px;">Convenio listo</div>
-      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Archivado en Ceiba</div>
-      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Autom&#225;tico</div>
+    <div style="background:#f0fdf4; border:2px solid #22c55e; border-radius:8px;
+                padding:8px 6px; flex:1; text-align:center; min-width:0;">
+      <div style="font-size:18px;">&#9989;</div>
+      <div style="font-size:11px; font-weight:700; color:#16a34a; margin-top:3px;">Convenio listo</div>
+      <div style="font-size:9px; color:#6b7280; margin-top:1px;">Archivado en Ceiba</div>
+      <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Autom&#225;tico</div>
     </div>
 
   </div>
 </div>
-""", height=220)
+""", height=155)
 
 st.divider()
 

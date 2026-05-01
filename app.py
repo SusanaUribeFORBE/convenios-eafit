@@ -11,6 +11,7 @@ MESES_ES = {
     5:"05 - Mayo", 6:"06 - Junio", 7:"07 - Julio", 8:"08 - Agosto",
     9:"09 - Septiembre", 10:"10 - Octubre", 11:"11 - Noviembre", 12:"12 - Diciembre"
 }
+# Mapa inverso para obtener el número del mes desde la etiqueta
 MESES_INV = {v: k for k, v in MESES_ES.items()}
 
 def selector_fecha(label, key, default=None):
@@ -30,7 +31,6 @@ def selector_fecha(label, key, default=None):
         return date(anio, mes, min(dia, 28 if mes == 2 else 30 if mes in [4,6,9,11] else 31))
     except:
         return date(anio, mes, 1)
-
 import importlib.util as _ilu
 _BASE = os.path.dirname(os.path.abspath(__file__))
 _spec = _ilu.spec_from_file_location("generador", os.path.join(_BASE, "generador.py"))
@@ -83,6 +83,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Encabezado ───────────────────────────────────────────────────────────────
+# Logo EAFIT
 _logo_path = os.path.join(_BASE, "logo_eafit.png")
 if os.path.exists(_logo_path):
     col_logo, col_titulo = st.columns([1, 3])
@@ -129,6 +130,7 @@ quien_arl = st.radio(
 )
 quien_paga_arl = "Organización" if "organización" in quien_arl.lower() else "EAFIT"
 
+# Mostrar qué plantilla se usará
 NOMBRES_PLANTILLAS = {
     ("Práctica", True,  "Organización"): "Convenio de Vinculación Formativa REMUNERADA · Empresa paga ARL",
     ("Práctica", True,  "EAFIT"):        "Convenio de Vinculación Formativa REMUNERADA · EAFIT paga ARL",
@@ -286,6 +288,7 @@ components.html("""
     Orden secuencial de firmas
   </div>
   <div style="display:flex; align-items:stretch; gap:4px; flex-wrap:nowrap; width:100%;">
+
     <div style="background:white; border:2px solid #0057a8; border-radius:8px;
                 padding:8px 6px; flex:1; text-align:center; min-width:0;">
       <div style="font-size:18px;">&#127970;</div>
@@ -293,7 +296,9 @@ components.html("""
       <div style="font-size:9px; color:#6b7280; margin-top:1px;">Representante legal</div>
       <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Plazo: 48 h</div>
     </div>
+
     <div style="color:#9ca3af; font-size:18px; display:flex; align-items:center; padding:0 2px;">&#8250;</div>
+
     <div style="background:white; border:2px solid #0057a8; border-radius:8px;
                 padding:8px 6px; flex:1; text-align:center; min-width:0;">
       <div style="font-size:18px;">&#128100;</div>
@@ -301,7 +306,9 @@ components.html("""
       <div style="font-size:9px; color:#6b7280; margin-top:1px;">Al recibir confirmaci&#243;n</div>
       <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Plazo: 48 h</div>
     </div>
+
     <div style="color:#9ca3af; font-size:18px; display:flex; align-items:center; padding:0 2px;">&#8250;</div>
+
     <div style="background:white; border:2px solid #0057a8; border-radius:8px;
                 padding:8px 6px; flex:1; text-align:center; min-width:0;">
       <div style="font-size:18px;">&#127891;</div>
@@ -309,7 +316,9 @@ components.html("""
       <div style="font-size:9px; color:#6b7280; margin-top:1px;">Asesor Talento</div>
       <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Plazo: 24 h</div>
     </div>
+
     <div style="color:#9ca3af; font-size:18px; display:flex; align-items:center; padding:0 2px;">&#8250;</div>
+
     <div style="background:#f0fdf4; border:2px solid #22c55e; border-radius:8px;
                 padding:8px 6px; flex:1; text-align:center; min-width:0;">
       <div style="font-size:18px;">&#9989;</div>
@@ -317,6 +326,7 @@ components.html("""
       <div style="font-size:9px; color:#6b7280; margin-top:1px;">Archivado en Ceiba</div>
       <div style="font-size:9px; color:#059669; font-weight:600; margin-top:3px;">Autom&#225;tico</div>
     </div>
+
   </div>
 </div>
 """, height=155)
@@ -350,6 +360,7 @@ if not todo_completo:
     if not nombre_monitor: faltantes.append("Nombre del monitor")
     if len(actividades) < 4: faltantes.append(f"Actividades (mínimo 4, ingresadas {len(actividades)})")
     if remunerada and not monto_letras: faltantes.append("Monto del auxilio")
+    
     if faltantes:
         st.warning("⚠️ Campos pendientes: " + " · ".join(faltantes))
 
@@ -388,10 +399,10 @@ if generar and todo_completo:
             'fecha_firma': fecha_firma,
         }
         docx_bytes = generar_documento(datos)
-
+    
     nombre_archivo = f"Convenio_{nombre_est.split()[0]}_{nombre_empresa.split()[0]}_{fecha_inicio.strftime('%Y%m')}.docx"
     nombre_archivo = nombre_archivo.replace(" ", "_")
-
+    
     st.markdown("""
     <div class="success-box">
       <b>✅ ¡Convenio generado exitosamente!</b><br>
@@ -428,13 +439,19 @@ if generar and todo_completo:
     📝 Actividades: {len(actividades)} registradas
     """)
 
+    # ── Simulación del flujo de firmas ─────────────────────────────────────
     if iniciar_firmas:
         import time
+
         st.markdown("""
         <div style="background:#00205B; color:white; border-radius:12px;
                     padding:18px 22px; margin:16px 0 8px;">
-          <div style="font-size:15px; font-weight:700; margin-bottom:4px;">🔏 Flujo de firmas iniciado</div>
-          <div style="font-size:12px; opacity:.85;">El convenio se está enviando secuencialmente a cada firmante.</div>
+          <div style="font-size:15px; font-weight:700; margin-bottom:4px;">
+            🔏 Flujo de firmas iniciado
+          </div>
+          <div style="font-size:12px; opacity:.85;">
+            El convenio se está enviando secuencialmente a cada firmante.
+          </div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -443,12 +460,14 @@ if generar and todo_completo:
             ("👤", "Estudiante",    email_est,    "Practicante EAFIT",  "Notificando al estudiante…",   "✅ Notificación enviada — esperando firma"),
             ("🎓", "EAFIT",         email_eafit,  "Asesor Talento",     "Notificando al asesor…",       "✅ Convenio en bandeja del asesor"),
         ]
+
         for icono, nombre, email, rol, msg_cargando, msg_ok in pasos:
             with st.spinner(f"{icono} {nombre} ({email}) — {msg_cargando}"):
                 time.sleep(1.4)
             st.markdown(f"""
-            <div style="display:flex; align-items:center; gap:12px; background:white;
-                        border:1.5px solid #22c55e; border-radius:10px; padding:12px 16px; margin-bottom:8px;">
+            <div style="display:flex; align-items:center; gap:12px;
+                        background:white; border:1.5px solid #22c55e;
+                        border-radius:10px; padding:12px 16px; margin-bottom:8px;">
               <div style="font-size:26px;">{icono}</div>
               <div>
                 <div style="font-size:13px; font-weight:700; color:#003087;">{nombre} — {rol}</div>
@@ -468,7 +487,8 @@ if generar and todo_completo:
             Cada firmante recibirá un correo con enlace de firma electrónica.<br>
             El convenio se archivará automáticamente en Ceiba una vez todos hayan firmado.
           </div>
-          <div style="margin-top:12px; display:flex; justify-content:center; gap:16px; font-size:11px; color:#6b7280;">
+          <div style="margin-top:12px; display:flex; justify-content:center; gap:16px;
+                      font-size:11px; color:#6b7280;">
             <span>⏱ Tiempo estimado total: <b>2–4 días hábiles</b></span>
             <span>vs. proceso manual: <b>2–4 semanas</b></span>
           </div>
@@ -486,22 +506,24 @@ import streamlit.components.v1 as _comp
 _comp.html("""
 <div style="font-family:sans-serif; padding:4px 0;">
 
+  <!-- FASE ACTUAL -->
   <div style="display:flex; gap:14px; margin-bottom:14px; align-items:flex-start;">
     <div style="min-width:44px; text-align:center;">
       <div style="background:#0057a8; color:white; border-radius:50%; width:36px; height:36px;
-                  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin:auto;">&#10003;</div>
+                  display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin:auto;">✓</div>
       <div style="width:2px; background:#d1ddf7; height:28px; margin:4px auto;"></div>
     </div>
     <div style="background:#eef4ff; border:1.5px solid #0057a8; border-radius:10px; padding:12px 16px; flex:1;">
       <div style="font-size:10px; font-weight:700; color:#0057a8; text-transform:uppercase; letter-spacing:.06em;">Fase actual — Demo funcional</div>
-      <div style="font-size:12px; color:#1e3a5f; font-weight:600; margin-top:4px;">Generaci&#243;n autom&#225;tica de convenios</div>
+      <div style="font-size:12px; color:#1e3a5f; font-weight:600; margin-top:4px;">Generación automática de convenios</div>
       <div style="font-size:11px; color:#374151; margin-top:4px; line-height:1.5;">
-        &#9989; Formulario individual con 5 pasos &nbsp;&#183;&nbsp; &#9989; Carga masiva desde Excel<br>
-        &#9989; Flujo de firmas simulado &nbsp;&#183;&nbsp; &#9989; Descarga en .docx y .zip
+        ✅ Formulario individual con 5 pasos &nbsp;·&nbsp; ✅ Carga masiva desde Excel<br>
+        ✅ Flujo de firmas simulado &nbsp;·&nbsp; ✅ Descarga en .docx y .zip
       </div>
     </div>
   </div>
 
+  <!-- FASE 1 -->
   <div style="display:flex; gap:14px; margin-bottom:14px; align-items:flex-start;">
     <div style="min-width:44px; text-align:center;">
       <div style="background:#f59e0b; color:white; border-radius:50%; width:36px; height:36px;
@@ -509,17 +531,18 @@ _comp.html("""
       <div style="width:2px; background:#d1ddf7; height:28px; margin:4px auto;"></div>
     </div>
     <div style="background:#fffbeb; border:1.5px solid #f59e0b; border-radius:10px; padding:12px 16px; flex:1;">
-      <div style="font-size:10px; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:.06em;">Fase 1 — Firma electr&#243;nica real</div>
-      <div style="font-size:12px; color:#78350f; font-weight:600; margin-top:4px;">Integraci&#243;n con plataforma de firmas</div>
+      <div style="font-size:10px; font-weight:700; color:#b45309; text-transform:uppercase; letter-spacing:.06em;">Fase 1 — Firma electrónica real</div>
+      <div style="font-size:12px; color:#78350f; font-weight:600; margin-top:4px;">Integración con plataforma de firmas</div>
       <div style="font-size:11px; color:#374151; margin-top:4px; line-height:1.5;">
-        &#128279; API de DocuSign / Adobe Sign / Signaturit<br>
-        &#128231; Env&#237;o autom&#225;tico a cada firmante en orden secuencial<br>
-        &#9997;&#65039; Firma con validez legal (Ley 527/99 Colombia)<br>
-        &#128193; Archivado autom&#225;tico del convenio firmado
+        🔗 API de DocuSign / Adobe Sign / Signaturit<br>
+        📧 Envío automático a cada firmante en orden secuencial<br>
+        ✍️ Firma con validez legal (Ley 527/99 Colombia)<br>
+        📁 Archivado automático del convenio firmado
       </div>
     </div>
   </div>
 
+  <!-- FASE 2 -->
   <div style="display:flex; gap:14px; margin-bottom:14px; align-items:flex-start;">
     <div style="min-width:44px; text-align:center;">
       <div style="background:#8b5cf6; color:white; border-radius:50%; width:36px; height:36px;
@@ -527,34 +550,36 @@ _comp.html("""
       <div style="width:2px; background:#d1ddf7; height:28px; margin:4px auto;"></div>
     </div>
     <div style="background:#f5f3ff; border:1.5px solid #8b5cf6; border-radius:10px; padding:12px 16px; flex:1;">
-      <div style="font-size:10px; font-weight:700; color:#6d28d9; text-transform:uppercase; letter-spacing:.06em;">Fase 2 — Automatizaci&#243;n end-to-end</div>
+      <div style="font-size:10px; font-weight:700; color:#6d28d9; text-transform:uppercase; letter-spacing:.06em;">Fase 2 — Automatización end-to-end</div>
       <div style="font-size:12px; color:#4c1d95; font-weight:600; margin-top:4px;">Pipeline completo con Make / n8n</div>
       <div style="font-size:11px; color:#374151; margin-top:4px; line-height:1.5;">
-        &#9889; Generaci&#243;n masiva + env&#237;o inmediato sin intervenci&#243;n humana<br>
-        &#128276; Recordatorios autom&#225;ticos si no se firma en el plazo<br>
-        &#128202; Dashboard de seguimiento en tiempo real<br>
-        &#128260; Sincronizaci&#243;n directa con Ceiba (Symplicity)
+        ⚡ Generación masiva + envío inmediato sin intervención humana<br>
+        🔔 Recordatorios automáticos si no se firma en el plazo<br>
+        📊 Dashboard de seguimiento en tiempo real<br>
+        🔄 Sincronización directa con Ceiba (Symplicity)
       </div>
     </div>
   </div>
 
+  <!-- FASE 3 -->
   <div style="display:flex; gap:14px; align-items:flex-start;">
     <div style="min-width:44px; text-align:center;">
       <div style="background:#22c55e; color:white; border-radius:50%; width:36px; height:36px;
                   display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; margin:auto;">3</div>
     </div>
     <div style="background:#f0fdf4; border:1.5px solid #22c55e; border-radius:10px; padding:12px 16px; flex:1;">
-      <div style="font-size:10px; font-weight:700; color:#16a34a; text-transform:uppercase; letter-spacing:.06em;">Fase 3 — IA + anal&#237;tica</div>
+      <div style="font-size:10px; font-weight:700; color:#16a34a; text-transform:uppercase; letter-spacing:.06em;">Fase 3 — IA + analítica</div>
       <div style="font-size:12px; color:#14532d; font-weight:600; margin-top:4px;">Motor inteligente de procesos</div>
       <div style="font-size:11px; color:#374151; margin-top:4px; line-height:1.5;">
-        &#129302; Validaci&#243;n autom&#225;tica de datos con IA antes de generar<br>
-        &#128200; Predicci&#243;n de cuellos de botella en el proceso de firmas<br>
-        &#128172; Chatbot para estudiantes y empresas sobre el estado del convenio<br>
-        &#128201; Reducci&#243;n del tiempo: de 2-4 semanas a menos de 48 horas
+        🤖 Validación automática de datos con IA antes de generar<br>
+        📈 Predicción de cuellos de botella en el proceso de firmas<br>
+        💬 Chatbot para estudiantes y empresas sobre el estado del convenio<br>
+        📉 Reducción del tiempo de proceso: de 2-4 semanas a &lt;48 horas
       </div>
     </div>
   </div>
 
+  <!-- Comparativo de impacto -->
   <div style="margin-top:16px; background:#1e3a5f; border-radius:10px; padding:14px 18px; color:white;">
     <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px; opacity:.8;">
       Impacto estimado al implementar las 3 fases
@@ -573,8 +598,8 @@ _comp.html("""
         <div style="font-size:10px; opacity:.8; margin-top:2px;">Trazabilidad</div>
       </div>
       <div style="background:rgba(255,255,255,.1); border-radius:8px; padding:10px 14px; flex:1; min-width:100px; text-align:center;">
-        <div style="font-size:22px; font-weight:700; color:#c084fc;">x10</div>
-        <div style="font-size:10px; opacity:.8; margin-top:2px;">Capacidad de gesti&#243;n</div>
+        <div style="font-size:22px; font-weight:700; color:#c084fc;">×10</div>
+        <div style="font-size:10px; opacity:.8; margin-top:2px;">Capacidad de gestión</div>
       </div>
     </div>
   </div>
@@ -588,7 +613,7 @@ st.caption("🤖 Reto 2 · Motor de Procesos · Beca IA EAFIT · Equipo SER ANDI
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# SECCIÓN CARGA MASIVA
+# SECCIÓN CARGA MASIVA (al final del formulario individual)
 # ═══════════════════════════════════════════════════════════════════════════
 st.markdown("---")
 st.markdown("""

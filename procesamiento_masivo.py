@@ -72,18 +72,21 @@ def procesar_excel(ruta_excel: str, carpeta_salida: str = None) -> tuple:
         "Actividad 7":                 "actividad_7",
         "Actividad 8":                 "actividad_8",
         "Fecha Firma (DD/MM/AAAA)":    "fecha_firma",
+        "Email Organizacion":          "email_org",
+        "Email Estudiante":            "email_est",
+        "Email EAFIT":                 "email_eafit",
     }
 
     # Tambien intentar con tildes (por si el Excel tiene los encabezados con tildes)
     MAPA_TILDE = {
         "¿Remunerada?":                "remunerada",
-        "¿Quién paga ARL?":       "quien_paga_arl",
-        "Cédula Rep. Legal":            "cedula_representante",
+        "¿Quién paga ARL?":            "quien_paga_arl",
+        "Cédula Rep. Legal":           "cedula_representante",
         "Cédula Estudiante":           "cedula_estudiante",
         "Programa Académico":          "programa_academico",
         "Monto en Números":            "monto_numeros",
-        "Cédula Tutor":               "cedula_tutor",
-        "Cédula Monitor":             "cedula_monitor",
+        "Cédula Tutor":                "cedula_tutor",
+        "Cédula Monitor":              "cedula_monitor",
     }
     MAPA.update(MAPA_TILDE)
 
@@ -128,6 +131,9 @@ def procesar_excel(ruta_excel: str, carpeta_salida: str = None) -> tuple:
                         for i in range(1,9)
                         if str(row.get(f"actividad_{i}","") or "").strip()
                     ],
+                    "email_org":   str(row.get("email_org","") or "").strip(),
+                    "email_est":   str(row.get("email_est","") or "").strip(),
+                    "email_eafit": str(row.get("email_eafit","") or "").strip(),
                 }
                 docx_bytes = generar_documento(datos)
                 fname = nombre_archivo(row)

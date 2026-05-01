@@ -11,7 +11,6 @@ MESES_ES = {
     5:"05 - Mayo", 6:"06 - Junio", 7:"07 - Julio", 8:"08 - Agosto",
     9:"09 - Septiembre", 10:"10 - Octubre", 11:"11 - Noviembre", 12:"12 - Diciembre"
 }
-# Mapa inverso para obtener el número del mes desde la etiqueta
 MESES_INV = {v: k for k, v in MESES_ES.items()}
 
 def selector_fecha(label, key, default=None):
@@ -31,6 +30,7 @@ def selector_fecha(label, key, default=None):
         return date(anio, mes, min(dia, 28 if mes == 2 else 30 if mes in [4,6,9,11] else 31))
     except:
         return date(anio, mes, 1)
+
 import importlib.util as _ilu
 _BASE = os.path.dirname(os.path.abspath(__file__))
 _spec = _ilu.spec_from_file_location("generador", os.path.join(_BASE, "generador.py"))
@@ -83,12 +83,25 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ── Encabezado ───────────────────────────────────────────────────────────────
-st.markdown("""
-<div class="header-box">
-  <h1>🎓 Generador de Convenios · Talento EAFIT</h1>
-  <p>Complete el formulario para generar automáticamente el convenio o acuerdo de práctica/pasantía.</p>
-</div>
-""", unsafe_allow_html=True)
+_logo_path = os.path.join(_BASE, "logo_eafit.png")
+if os.path.exists(_logo_path):
+    col_logo, col_titulo = st.columns([1, 3])
+    with col_logo:
+        st.image(_logo_path, width=180)
+    with col_titulo:
+        st.markdown("""
+        <div class="header-box">
+          <h1>Generador de Convenios · Talento EAFIT</h1>
+          <p>Complete el formulario para generar automáticamente el convenio o acuerdo de práctica/pasantía.</p>
+        </div>
+        """, unsafe_allow_html=True)
+else:
+    st.markdown("""
+    <div class="header-box">
+      <h1>🎓 Generador de Convenios · Talento EAFIT</h1>
+      <p>Complete el formulario para generar automáticamente el convenio o acuerdo de práctica/pasantía.</p>
+    </div>
+    """, unsafe_allow_html=True)
 
 # ═══════════════════════════════════════════════════════════════════════════
 # PASO 1 — Tipo de experiencia y condiciones
@@ -116,7 +129,6 @@ quien_arl = st.radio(
 )
 quien_paga_arl = "Organización" if "organización" in quien_arl.lower() else "EAFIT"
 
-# Mostrar qué plantilla se usará
 NOMBRES_PLANTILLAS = {
     ("Práctica", True,  "Organización"): "Convenio de Vinculación Formativa REMUNERADA · Empresa paga ARL",
     ("Práctica", True,  "EAFIT"):        "Convenio de Vinculación Formativa REMUNERADA · EAFIT paga ARL",
@@ -346,7 +358,6 @@ if not todo_completo:
     if not nombre_monitor: faltantes.append("Nombre del monitor")
     if len(actividades) < 4: faltantes.append(f"Actividades (mínimo 4, ingresadas {len(actividades)})")
     if remunerada and not monto_letras: faltantes.append("Monto del auxilio")
-    
     if faltantes:
         st.warning("⚠️ Campos pendientes: " + " · ".join(faltantes))
 
@@ -385,10 +396,10 @@ if generar and todo_completo:
             'fecha_firma': fecha_firma,
         }
         docx_bytes = generar_documento(datos)
-    
+
     nombre_archivo = f"Convenio_{nombre_est.split()[0]}_{nombre_empresa.split()[0]}_{fecha_inicio.strftime('%Y%m')}.docx"
     nombre_archivo = nombre_archivo.replace(" ", "_")
-    
+
     st.markdown("""
     <div class="success-box">
       <b>✅ ¡Convenio generado exitosamente!</b><br>
@@ -425,7 +436,6 @@ if generar and todo_completo:
     📝 Actividades: {len(actividades)} registradas
     """)
 
-    # ── Simulación del flujo de firmas ─────────────────────────────────────
     if iniciar_firmas:
         import time
 
@@ -487,7 +497,7 @@ st.caption("🤖 Reto 2 · Motor de Procesos · Beca IA EAFIT · Equipo SER ANDI
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# SECCIÓN CARGA MASIVA (al final del formulario individual)
+# SECCIÓN CARGA MASIVA
 # ═══════════════════════════════════════════════════════════════════════════
 st.markdown("---")
 st.markdown("""

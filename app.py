@@ -214,7 +214,7 @@ st.divider()
 # ═══════════════════════════════════════════════════════════════════════════
 # PASO 4 — Actividades y firma
 # ═══════════════════════════════════════════════════════════════════════════
-st.markdown('<div class="step-label">Paso 4 de 4 — Actividades y fecha de firma</div>', unsafe_allow_html=True)
+st.markdown('<div class="step-label">Paso 4 de 5 — Actividades y fecha de firma</div>', unsafe_allow_html=True)
 st.markdown('<div class="section-title">Actividades del estudiante</div>', unsafe_allow_html=True)
 st.caption("Ingrese entre 4 y 8 actividades/funciones que realizará el estudiante.")
 
@@ -231,6 +231,95 @@ for i in range(6):
             actividades.append(act.strip())
 
 fecha_firma = selector_fecha("Fecha de firma del convenio *", "firma", date.today())
+
+st.divider()
+
+# ═══════════════════════════════════════════════════════════════════════════
+# PASO 5 — Correos para el flujo de firmas
+# ═══════════════════════════════════════════════════════════════════════════
+st.markdown('<div class="step-label">Paso 5 de 5 — Flujo de firmas digital</div>', unsafe_allow_html=True)
+st.markdown('<div class="section-title">📧 Correos de los firmantes</div>', unsafe_allow_html=True)
+st.caption("El convenio será enviado automáticamente a cada parte en el orden correcto.")
+
+col1, col2, col3 = st.columns(3)
+with col1:
+    st.markdown("**1️⃣ Organización**")
+    email_org = st.text_input(
+        "Email representante legal",
+        placeholder="firma@empresa.com",
+        key="email_org",
+    )
+with col2:
+    st.markdown("**2️⃣ Estudiante**")
+    email_est = st.text_input(
+        "Email institucional EAFIT",
+        placeholder="estudiante@eafit.edu.co",
+        key="email_est",
+    )
+with col3:
+    st.markdown("**3️⃣ EAFIT**")
+    email_eafit = st.text_input(
+        "Email asesor Talento EAFIT",
+        placeholder="asesor@eafit.edu.co",
+        key="email_eafit",
+    )
+
+# Pipeline visual estático (siempre visible)
+st.markdown("""
+<div style="
+  background:#f8faff;
+  border:1.5px solid #d1ddf7;
+  border-radius:12px;
+  padding:16px 20px;
+  margin:14px 0 4px;
+">
+  <div style="font-size:11px; font-weight:700; color:#0057a8; text-transform:uppercase;
+              letter-spacing:.06em; margin-bottom:12px;">
+    Orden secuencial de firmas
+  </div>
+  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+
+    <div style="background:white; border:2px solid #0057a8; border-radius:10px;
+                padding:10px 14px; min-width:140px; text-align:center;">
+      <div style="font-size:20px;">🏢</div>
+      <div style="font-size:12px; font-weight:700; color:#003087; margin-top:4px;">Organización</div>
+      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Representante legal</div>
+      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Plazo: 48 h</div>
+    </div>
+
+    <div style="color:#9ca3af; font-size:22px; font-weight:300;">›</div>
+
+    <div style="background:white; border:2px solid #0057a8; border-radius:10px;
+                padding:10px 14px; min-width:140px; text-align:center;">
+      <div style="font-size:20px;">👤</div>
+      <div style="font-size:12px; font-weight:700; color:#003087; margin-top:4px;">Estudiante</div>
+      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Al recibir confirmación</div>
+      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Plazo: 48 h</div>
+    </div>
+
+    <div style="color:#9ca3af; font-size:22px; font-weight:300;">›</div>
+
+    <div style="background:white; border:2px solid #0057a8; border-radius:10px;
+                padding:10px 14px; min-width:140px; text-align:center;">
+      <div style="font-size:20px;">🎓</div>
+      <div style="font-size:12px; font-weight:700; color:#003087; margin-top:4px;">EAFIT</div>
+      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Asesor Talento EAFIT</div>
+      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Plazo: 24 h</div>
+    </div>
+
+    <div style="color:#9ca3af; font-size:22px; font-weight:300;">›</div>
+
+    <div style="background:#f0fdf4; border:2px solid #22c55e; border-radius:10px;
+                padding:10px 14px; min-width:140px; text-align:center;">
+      <div style="font-size:20px;">✅</div>
+      <div style="font-size:12px; font-weight:700; color:#16a34a; margin-top:4px;">Convenio listo</div>
+      <div style="font-size:10px; color:#6b7280; margin-top:2px;">Archivado en Ceiba</div>
+      <div style="font-size:10px; color:#059669; font-weight:600; margin-top:4px;">Automático</div>
+    </div>
+
+  </div>
+</div>
+""", unsafe_allow_html=True)
 
 st.divider()
 
@@ -308,28 +397,93 @@ if generar and todo_completo:
     <div class="success-box">
       <b>✅ ¡Convenio generado exitosamente!</b><br>
       <span style="font-size:13px; color:#374151;">
-        El documento está listo para revisar y enviar a firmas.
-        Descárgalo con el botón de abajo.
+        El documento está listo. Descárgalo o inicia el flujo de firmas digital.
       </span>
     </div>
     """, unsafe_allow_html=True)
-    
-    st.download_button(
-        label="⬇️ Descargar convenio Word (.docx)",
-        data=docx_bytes,
-        file_name=nombre_archivo,
-        mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        use_container_width=True,
-    )
-    
+
+    col_dl, col_sign = st.columns(2)
+    with col_dl:
+        st.download_button(
+            label="⬇️ Descargar convenio (.docx)",
+            data=docx_bytes,
+            file_name=nombre_archivo,
+            mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            use_container_width=True,
+        )
+    with col_sign:
+        iniciar_firmas = st.button(
+            "🔏 Iniciar flujo de firmas",
+            type="primary",
+            use_container_width=True,
+            disabled=not (email_org.strip() and email_est.strip() and email_eafit.strip()),
+            help="Completa los 3 correos de firmantes para activar este botón."
+        )
+
     st.info(f"""
-    **Resumen del convenio generado:**  
-    📋 Tipo: {nombre_plantilla}  
-    🏢 Empresa: {nombre_empresa}  
-    👤 Estudiante: {nombre_est}  
-    📅 Período: {fecha_inicio.strftime('%d/%m/%Y')} → {fecha_fin.strftime('%d/%m/%Y')}  
+    **Resumen del convenio generado:**
+    📋 Tipo: {nombre_plantilla}
+    🏢 Empresa: {nombre_empresa}
+    👤 Estudiante: {nombre_est}
+    📅 Período: {fecha_inicio.strftime('%d/%m/%Y')} → {fecha_fin.strftime('%d/%m/%Y')}
     📝 Actividades: {len(actividades)} registradas
     """)
+
+    # ── Simulación del flujo de firmas ─────────────────────────────────────
+    if iniciar_firmas:
+        import time
+
+        st.markdown("""
+        <div style="background:#00205B; color:white; border-radius:12px;
+                    padding:18px 22px; margin:16px 0 8px;">
+          <div style="font-size:15px; font-weight:700; margin-bottom:4px;">
+            🔏 Flujo de firmas iniciado
+          </div>
+          <div style="font-size:12px; opacity:.85;">
+            El convenio se está enviando secuencialmente a cada firmante.
+          </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+        pasos = [
+            ("🏢", "Organización",  email_org,   "Representante legal", "Enviando enlace de firma…",    "✅ Enlace enviado — esperando firma"),
+            ("👤", "Estudiante",    email_est,    "Practicante EAFIT",  "Notificando al estudiante…",   "✅ Notificación enviada — esperando firma"),
+            ("🎓", "EAFIT",         email_eafit,  "Asesor Talento",     "Notificando al asesor…",       "✅ Convenio en bandeja del asesor"),
+        ]
+
+        for icono, nombre, email, rol, msg_cargando, msg_ok in pasos:
+            with st.spinner(f"{icono} {nombre} ({email}) — {msg_cargando}"):
+                time.sleep(1.4)
+            st.markdown(f"""
+            <div style="display:flex; align-items:center; gap:12px;
+                        background:white; border:1.5px solid #22c55e;
+                        border-radius:10px; padding:12px 16px; margin-bottom:8px;">
+              <div style="font-size:26px;">{icono}</div>
+              <div>
+                <div style="font-size:13px; font-weight:700; color:#003087;">{nombre} — {rol}</div>
+                <div style="font-size:12px; color:#374151;">📧 {email}</div>
+                <div style="font-size:12px; color:#16a34a; font-weight:600; margin-top:2px;">{msg_ok}</div>
+              </div>
+              <div style="margin-left:auto; font-size:22px;">✅</div>
+            </div>
+            """, unsafe_allow_html=True)
+
+        st.markdown("""
+        <div style="background:#f0fdf4; border:2px solid #22c55e; border-radius:12px;
+                    padding:16px 20px; margin-top:12px; text-align:center;">
+          <div style="font-size:22px; margin-bottom:6px;">🎉</div>
+          <div style="font-size:15px; font-weight:700; color:#16a34a;">¡Flujo de firmas activado con éxito!</div>
+          <div style="font-size:12px; color:#374151; margin-top:6px;">
+            Cada firmante recibirá un correo con enlace de firma electrónica.<br>
+            El convenio se archivará automáticamente en Ceiba una vez todos hayan firmado.
+          </div>
+          <div style="margin-top:12px; display:flex; justify-content:center; gap:16px;
+                      font-size:11px; color:#6b7280;">
+            <span>⏱ Tiempo estimado total: <b>2–4 días hábiles</b></span>
+            <span>vs. proceso manual: <b>2–4 semanas</b></span>
+          </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 # ── Footer ───────────────────────────────────────────────────────────────────
 st.markdown("---")
